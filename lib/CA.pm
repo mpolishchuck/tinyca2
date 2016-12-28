@@ -349,7 +349,7 @@ sub get_ca_create {
       $opts = {};
       $opts->{'days'} = 3650; # set default to 10 years
       $opts->{'bits'} = 4096;
-      $opts->{'digest'} = 'sha1';
+      $opts->{'digest'} = 'sha512';
 
       if(defined($mode) && $mode eq "sub") { # create SubCA, use defaults
          $opts->{'parentca'} = $main->{'CA'}->{'actca'};
@@ -453,7 +453,7 @@ sub get_ca_import {
       $opts = {};
       $opts->{'days'} = 3650; # set default to 10 years
       $opts->{'bits'} = 4096;
-      $opts->{'digest'} = 'sha1';
+      $opts->{'digest'} = 'sha512';
       
       $main->show_ca_import_dialog($opts);
       return;

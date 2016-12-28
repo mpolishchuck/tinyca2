@@ -37,6 +37,10 @@ my %md_algorithms = (
 		     'ripemd160' => 'RIPEMD-160',
 #		     'sha' => 'SHA',
 		     'sha1' => 'SHA-1',
+		     'sha224' => 'SHA-224',
+		     'sha256' => 'SHA-256',
+		     'sha384' => 'SHA-384',
+		     'sha512' => 'SHA-512',
 		     );
 
 my %bit_lengths = (
@@ -978,7 +982,7 @@ sub create_detail_tree {
    $piter = $store->append($root);
    $store->set($piter, 0 => $t);
 
-   for my $l qw(CN EMAIL O OU C ST L) {
+   for my $l (qw(CN EMAIL O OU C ST L)) {
       if(defined($parsed->{$l})) {
          if($l eq "OU") {
             foreach my $ou (@{$parsed->{'OU'}}) {
@@ -1003,7 +1007,7 @@ sub create_detail_tree {
       $piter = $store->append($root);
       $store->set($piter, 0 => $t);
    
-      for my $l qw(CN EMAIL O OU C ST L) {
+      for my $l (qw(CN EMAIL O OU C ST L)) {
          if(defined($parsed->{'ISSUERDN'}->{$l})) {
             if($l eq "OU") {
                foreach my $ou (@{$parsed->{'ISSUERDN'}->{'OU'}}) {
@@ -1029,7 +1033,7 @@ sub create_detail_tree {
       $piter = $store->append($root);
       $store->set($piter, 0 => $t);
    
-      for my $l qw(STATUS NOTBEFORE NOTAFTER) {
+      for my $l (qw(STATUS NOTBEFORE NOTAFTER)) {
          if(defined($parsed->{$l})) {
             $citer = $store->append($piter);
             $store->set($citer, 
@@ -1045,7 +1049,7 @@ sub create_detail_tree {
    $store->set($piter, 0 => $t);
 
 
-   for my $l qw(STATUS SERIAL KEYSIZE PK_ALGORITHM SIG_ALGORITHM TYPE) {
+   for my $l (qw(STATUS SERIAL KEYSIZE PK_ALGORITHM SIG_ALGORITHM TYPE)) {
       if(defined($parsed->{$l})) {
          $citer = $store->append($piter);
          $store->set($citer, 
@@ -1060,7 +1064,7 @@ sub create_detail_tree {
       $piter = $store->append($root);
       $store->set($piter, 0 => $t);
    
-      for my $l qw(FINGERPRINTMD5 FINGERPRINTSHA1) {
+      for my $l (qw(FINGERPRINTMD5 FINGERPRINTSHA1)) {
          if(defined($parsed->{$l})) {
             $citer = $store->append($piter);
             $store->set($citer, 
@@ -1249,7 +1253,7 @@ sub show_req_dialog {
    # table for request data
    my $cc=0;
    my $ous = 1;
-   if(defined($opts->{'OU'})) {
+   if(defined($opts->{'OU'}) and ref($opts->{'OU'}) eq 'ARRAY') {
       $ous = @{$opts->{'OU'}} - 1;
    }
    $reqtable = Gtk2::Table->new(1, 13 + $ous, 0);
@@ -1297,7 +1301,7 @@ sub show_req_dialog {
          _("Organization Name (eg. company):"),
          \$opts->{'O'}, $reqtable, 10, 1);
 
-   if(defined($opts->{'OU'})) {
+   if(defined($opts->{'OU'}) and ref($opts->{'OU'}) eq 'ARRAY') {
       foreach my $ou (@{$opts->{'OU'}}) {
          $entry = GUI::HELPERS::entry_to_table(
                _("Organizational Unit Name (eg. section):"),
@@ -2521,7 +2525,7 @@ sub about {
    my ($aboutdialog, $href, $label);
 
    $aboutdialog = Gtk2::AboutDialog->new();
-   $aboutdialog->set_name("TinyCA2");
+   $aboutdialog->set_program_name("TinyCA2");
    $aboutdialog->set_version($main->{'version'});
    $aboutdialog->set_copyright("2002-2006 Stephan Martin");
    $aboutdialog->set_license("GNU Public License (GPL)");
@@ -2534,6 +2538,8 @@ sub about {
          _("French: Thibault Le Meur <Thibault.Lemeur\@supelec.fr>"));
 
    $aboutdialog->show_all();
+   $aboutdialog->run;
+   $aboutdialog->destroy;
 
    return;
 }
@@ -2634,7 +2640,7 @@ sub show_req_date_warning {
 
    my ($box, $button_ok, $button_cancel, $t);
 
-   $t = _("The Certificate will be longer valid than your CA!");
+   $t = _("The certificate will be valid longer than its CA!");
    $t .= "\n";
    $t .= _("This may cause problems with some software!!");
 
@@ -3094,9 +3100,9 @@ sub _fill_radiobox {
    for $value (keys %values) {
       my $display_name = $values{$value};
       my $key = Gtk2::RadioButton->new($previous_key, $display_name);
-      $key->set_active(1) if(defined($$var) && $$var eq $value);
       $key->signal_connect('toggled' =>
 			   sub{GUI::CALLBACK::toggle_to_var($key, $var, $value)});
+      $key->set_active(1) if(defined($$var) && $$var eq $value);
       $radiobox->add($key);
       $previous_key = $key;
    }
