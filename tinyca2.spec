@@ -26,7 +26,7 @@ Summary:	   Graphical Tool for Managing a Certification Authority
 BuildArch:  noarch
 BuildRoot:  %{_tmppath}/%{name}-%{version}-build
 
-%description 
+%description
 TinyCA is a graphical tool written in Perl/Gtk to manage a small
 Certification Authority (CA) using openssl.
 
@@ -167,4 +167,3 @@ rm -rf %{buildroot}
 - use different listboxes
 * Mon Mar 18 2002 - sm@sm-zone.net
 - initial package
-

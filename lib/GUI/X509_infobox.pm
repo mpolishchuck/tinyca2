@@ -2,17 +2,17 @@
 #               Stephan Martin <sm@sm-zone.net>
 #
 # $Id: X509_infobox.pm,v 1.7 2006/06/28 21:50:42 sm Exp $
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
@@ -65,30 +65,30 @@ sub display {
   # otherwise we create the VBox directly inside the root widget
   else {
      $self->{'child'} = Gtk2::VBox->new(0,0);
-     $self->{'x509textbox'} = $self->{'child'};  
+     $self->{'x509textbox'} = $self->{'child'};
   }
 
-  # and pack it there  
+  # and pack it there
   $self->{'root'}->pack_start($self->{'child'}, 1, 1, 0);
 
    if (($mode eq 'cert') || ($mode eq 'cacert')) {
       # fingerprint in the top of certtextbox
       if(defined($self->{'certfingerprintmd5'})) {
          $self->{'certfingerprintmd5'}->destroy();
-      } 
+      }
       $self->{'certfingerprintmd5'} = GUI::HELPERS::create_label(
             _("Fingerprint (MD5)").": ".$parsed->{'FINGERPRINTMD5'},
             'center', 0, 0);
-      $self->{'x509textbox'}->pack_start( $self->{'certfingerprintmd5'}, 
+      $self->{'x509textbox'}->pack_start( $self->{'certfingerprintmd5'},
             0, 0, 0);
 
       if(defined($self->{'certfingerprintsha1'})) {
          $self->{'certfingerprintsha1'}->destroy();
-      } 
+      }
       $self->{'certfingerprintsha1'} = GUI::HELPERS::create_label(
             _("Fingerprint (SHA1)").": ".$parsed->{'FINGERPRINTSHA1'},
             'center', 0, 0);
-      $self->{'x509textbox'}->pack_start($self->{'certfingerprintsha1'}, 
+      $self->{'x509textbox'}->pack_start($self->{'certfingerprintsha1'},
             0, 0, 0);
    }
 
@@ -126,7 +126,7 @@ sub display {
    $scrolled = Gtk2::ScrolledWindow->new();
    $scrolled->set_shadow_type('etched-in');
    $scrolled->set_policy('never', 'never');
-   
+
    $self->{$leftbox} = Gtk2::VBox->new(0, 0);
    $self->{$bottombox}->pack_start($self->{$leftbox}, 1, 1, 0);
 
@@ -195,7 +195,7 @@ sub _create_detail_table {
    $column = Gtk2::TreeViewColumn->new_with_attributes(
          '', $renderer, 'text' => 1);
    $list->append_column($column);
-   
+
 
    foreach my $f (@{$fields}) {
       if(defined($parsed->{$f})){
@@ -204,7 +204,7 @@ sub _create_detail_table {
                $iter = $store->append();
                $store->set($iter, 0 => $words->{$f}, 1 => $_);
                # print STDERR "DEBUG: add line: @l\n";
-               
+
             }
          }else{
             # print STDERR "DEBUG: add line: @l\n";

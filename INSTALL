@@ -1,6 +1,6 @@
 1. Unpack the sources (seems like you got it already)
 
-2. Configure the following paths for your setup. These variables 
+2. Configure the following paths for your setup. These variables
    are located in the file tinyca itself.
 
 @INC                    (location of the directory lib)

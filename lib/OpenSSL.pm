@@ -1,17 +1,17 @@
 # Copyright (c) Stephan Martin <sm@sm-zone.net>
 #
 # $Id: OpenSSL.pm,v 1.14 2006/07/13 22:36:13 sm Exp $
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
@@ -46,11 +46,11 @@ sub new {
       $self->{'version'} = $1;
    }
 
-   # CRL output was broken before openssl 0.9.7f   
-   if($v =~ /\b0\.9\.[0-6][a-z]?\b/ || $v =~ /\b0\.9\.7[a-e]?\b/)  { 
-      $self->{'broken'} = 1; 
-   } else { 
-      $self->{'broken'} = 0; 
+   # CRL output was broken before openssl 0.9.7f
+   if($v =~ /\b0\.9\.[0-6][a-z]?\b/ || $v =~ /\b0\.9\.7[a-e]?\b/)  {
+      $self->{'broken'} = 1;
+   } else {
+      $self->{'broken'} = 0;
    }
 
    bless($self, $class);
@@ -64,7 +64,7 @@ sub newkey {
 
    if(defined($opts->{'algo'}) && $opts->{'algo'} eq "dsa") {
       $param = HELPERS::mktmp($self->{'tmp'}."/param");
-      
+
       $cmd = "$self->{'bin'} dsaparam";
       $cmd .= " -out $param";
       $cmd .= " $opts->{'bits'}";
@@ -124,7 +124,7 @@ sub newkey {
    if(defined($param) && $param ne '') {
       unlink($param);
    }
-   
+
    delete($ENV{'SSLPASS'});
 
    return($ret, $ext);
@@ -163,7 +163,7 @@ sub signreq {
    if(defined($opts->{'renewalurl'}) && $opts->{'renewalurl'} ne 'none') {
       $ENV{'NSRENEWALURL'} = $opts->{'renewalurl'};
    }
-   if($opts->{'subjaltname'} ne 'none' && 
+   if($opts->{'subjaltname'} ne 'none' &&
          $opts->{'subjaltname'} ne 'emailcopy') {
       if($opts->{'subjaltnametype'} eq 'ip') {
          $ENV{'SUBJECTALTNAMEIP'} = HELPERS::gen_subjectaltname_contents('IP:', $opts->{'subjaltname'});
@@ -175,7 +175,7 @@ sub signreq {
          $ENV{'SUBJECTALTNAMERAW'} = HELPERS::gen_subjectaltname_contents(undef, $opts->{'subjaltname'});
       }
    }
-   if($opts->{'extendedkeyusage'} ne 'none') { 
+   if($opts->{'extendedkeyusage'} ne 'none') {
       $ENV{'EXTENDEDKEYUSAGE'} = $opts->{'extendedkeyusage'};
    }
 
@@ -184,7 +184,7 @@ sub signreq {
    }
 
    # print STDERR "DEBUG call cmd: $cmd\n";
-      
+
    my($rdfh, $wtfh);
    $pid = open3($wtfh, $rdfh, $rdfh, $cmd);
    $ext = "$cmd\n\n";
@@ -295,7 +295,7 @@ sub revoke {
    }
    waitpid($pid, 0);
    $ret = $? >> 8;
-   
+
    delete($ENV{'SSLPASS'});
 
    return($ret, $ext);
@@ -319,7 +319,7 @@ sub newreq {
 
    $ENV{'SSLPASS'} = $opts->{'pass'};
    print "DEBUG call: $cmd\n";
-   
+
    my($rdfh, $wtfh);
    $ext = "$cmd\n\n";
    $pid = open3($wtfh, $rdfh, $rdfh, $cmd);
@@ -340,7 +340,7 @@ sub newreq {
    $ret = $? >> 8;
 
    print "DEBUG return: $ext\n";
-   
+
    delete($ENV{'SSLPASS'});
 
    return($ret, $ext);
@@ -440,7 +440,7 @@ sub newcrl {
 
    return($ret, $ext);
 }
-   
+
 sub parsecrl {
    my ($self, $file, $force) = @_;
 
@@ -473,7 +473,7 @@ sub parsecrl {
       GUI::HELPERS::print_warning($t, $ext);
       return;
    }
-   
+
    ($ret, $tmp->{'DER'}, $ext) = $self->convdata(
          'cmd'     => 'crl',
          'data'    => $tmp->{'PEM'},
@@ -505,8 +505,8 @@ sub parsecrl {
          $tmp->{'LAST_UPDATE'} = $1;
       } elsif ($_ =~ /Next Update.*: (.+)/i) {
          $tmp->{'NEXT_UPDATE'} = $1;
-      } 
-   }   
+      }
+   }
 
    # get revoked certs
    $tmp->{'LIST'} = [];
@@ -534,7 +534,7 @@ sub parsecrl {
             GUI::HELPERS::print_warning($t);
             return;
          }
-         
+
       } else {
          $i++;
       }
@@ -584,7 +584,7 @@ sub parsecert {
       GUI::HELPERS::print_warning($t, $ext);
       return;
    }
-   
+
    ($ret, $tmp->{'DER'}, $ext) = $self->convdata(
          'cmd'     => 'x509',
          'data'    => $tmp->{'PEM'},
@@ -624,11 +624,11 @@ sub parsecert {
       } elsif ($_ =~ /Subject.*: (.+)/i) {
          $tmp->{'DN'} = $1;
       }
-   }   
+   }
 
    # parse subject DN
    $dn = HELPERS::parse_dn($tmp->{'DN'});
-   foreach(keys(%$dn)) { 
+   foreach(keys(%$dn)) {
       $tmp->{$_} = $dn->{$_};
    }
 
@@ -638,7 +638,7 @@ sub parsecert {
    # get extensions
    $tmp->{'EXT'} = HELPERS::parse_extensions(\@lines, "cert");
 
-   # get fingerprint 
+   # get fingerprint
    $cmd = "$self->{'bin'} x509 -noout -fingerprint -md5 -in $file";
    my($rdfh, $wtfh);
    $ext = "$cmd\n\n";
@@ -699,9 +699,9 @@ sub parsecert {
       #print STDERR "DEBUG: parsed crl $crlfile : $crl\n";
 
       defined($crl) || GUI::HELPERS::print_error(_("Can't read CRL"));
-  
+
       $tmp->{'STATUS'} = _("VALID");
-  
+
       if($tmp->{'EXPDATE'} < $time) {
          $tmp->{'STATUS'} = _("EXPIRED");
          # keep database up to date
@@ -709,7 +709,7 @@ sub parsecert {
             _set_expired($tmp->{'SERIAL'}, $indexfile);
          }
       }
-     
+
       if (defined($tmp->{'SERIAL'})) {
          foreach my $revoked (@{$crl->{'LIST'}}) {
               #print STDERR "DEBUG: check tmp: $tmp->{'SERIAL'}\n";
@@ -799,7 +799,7 @@ sub parsereq {
       } elsif ($_ =~ /Version: \d.*/i) {
          $tmp->{'TYPE'} = 'PKCS#10';
       }
-   }   
+   }
 
    $dn = HELPERS::parse_dn($tmp->{'DN'});
    foreach(keys(%$dn)) {
@@ -817,7 +817,7 @@ sub parsereq {
 sub convdata {
    my $self = shift;
    my $opts = { @_ };
-   
+
    my ($tmp, $ext, $ret, $file, $pid, $cmd, $cmdout, $cmderr);
    $file = HELPERS::mktmp($self->{'tmp'}."/data");
 
@@ -836,18 +836,18 @@ sub convdata {
    if($self->{'broken'}) {
        if(($ret != 0 && $opts->{'cmd'} ne 'crl') ||
           ($ret != 0 && $opts->{'outform'} ne 'TEXT' && $opts->{'cmd'} eq 'crl') ||
-          ($ret != 1 && $opts->{'outform'} eq 'TEXT' && $opts->{'cmd'} eq 'crl')) { 
+          ($ret != 1 && $opts->{'outform'} eq 'TEXT' && $opts->{'cmd'} eq 'crl')) {
           unlink($file);
           return($ret, undef, $ext);
        } else {
           $ret = 0;
        }
    } else { # wow, they fixed it :-)
-      if($ret != 0) { 
-         unlink($file); 
-         return($ret, undef, $ext); 
-      } else { 
-         $ret = 0; 
+      if($ret != 0) {
+         unlink($file);
+         return($ret, undef, $ext);
+      } else {
+         $ret = 0;
       }
    }
 
@@ -875,7 +875,7 @@ sub convkey {
    my $cmd = "$self->{'bin'}";
 
    # print STDERR "DEBUG: got type: $opts->{'type'}\n";
-  
+
    if($opts->{'type'} eq "RSA") {
       $cmd .= " rsa";
    } elsif($opts->{'type'} eq "DSA") {
@@ -893,7 +893,7 @@ sub convkey {
    $ENV{'SSLPASS'}    = defined($opts->{'oldpass'}) ? $opts->{'oldpass'} :
                         $opts->{'pass'};
    $ENV{'SSLPASSOUT'} = $opts->{'pass'} if(not $opts->{'nopass'});
-   
+
    my($rdfh, $wtfh);
    $ext = "$cmd\n\n";
    $pid = open3($wtfh, $rdfh, $rdfh, $cmd);
@@ -927,7 +927,7 @@ sub genp12 {
    my $opts = { @_ };
 
    my($cmd, $ext, $ret, $pid);
-   
+
    $cmd = "$self->{'bin'} pkcs12 -export";
    $cmd .= " -out \"$opts->{'outfile'}\"";
    $cmd .= " -in \"$opts->{'certfile'}\"";
@@ -969,7 +969,7 @@ sub read_index {
    my ($self, $index) = @_;
 
    my (@lines, @index);
-   
+
    open(IN, "<$index") || do {
       my $t = sprintf(_("Can't read index %s: %s"), $index, $!);
       GUI::HELPERS::print_warning($t);
@@ -1001,7 +1001,7 @@ sub read_index {
 
 sub _set_expired {
    my ($serial, $index) =@_;
-   
+
    open(IN, "<$index") || do {
       my $t = sprintf(_("Can't read index %s: %s"), $index, $!);
       GUI::HELPERS::print_warning($t);
@@ -1032,14 +1032,14 @@ sub _set_expired {
 
 sub _get_date {
    my $string = shift;
-         
+
    $string =~ s/  / /g;
-            
+
    my @t1 = split(/ /, $string);
    my @t2 = split(/:/, $t1[2]);
 
    $t1[0] = _get_index($t1[0]);
-                              
+
    my $ret = Time::Local::timelocal($t2[2],$t2[1],$t2[0],$t1[1],$t1[0],$t1[3]);
 
    return($ret);
@@ -1049,7 +1049,7 @@ sub _get_index_date {
    my $string = shift;
 
    my ($y, $m, $d);
-   
+
    $y = substr($string, 0, 2) + 2000;
    $m = substr($string, 2, 2) - 1;
    $d = substr($string, 4, 2);
@@ -1058,7 +1058,7 @@ sub _get_index_date {
 
    return($ret);
 }
-   
+
 sub _get_index {
    my $m = shift;
 
@@ -1068,7 +1068,7 @@ sub _get_index {
       return $i if($a[$i] eq $m);
    }
 }
-   
+
 
 =over
 

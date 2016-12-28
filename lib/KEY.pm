@@ -1,17 +1,17 @@
 # Copyright (c) Stephan Martin <sm@sm-zone.net>
 #
 # $Id: KEY.pm,v 1.8 2006/06/28 21:50:41 sm Exp $
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
@@ -93,8 +93,8 @@ sub read_keylist {
    $modt = (stat($keydir))[9];
 
    if(defined($self->{'lastread'}) &&
-      $self->{'lastread'} >= $modt) { 
-      return(0); 
+      $self->{'lastread'} >= $modt) {
+      return(0);
    }
 
    opendir(DIR, $keydir) || do {
@@ -137,7 +137,7 @@ sub get_export_key {
          GUI::HELPERS::print_info(_("Please select a Key first"));
          return;
       }
-      
+
       $ca    = $main->{'keybrowser'}->selection_caname();
       $cadir = $main->{'keybrowser'}->selection_cadir();
       $email = $main->{'keybrowser'}->selection_email();
@@ -148,7 +148,7 @@ sub get_export_key {
       $opts->{'keyname'}  = HELPERS::enc_base64($opts->{'key'});
       $opts->{'keyfile'}  = $cadir."/keys/".$opts->{'keyname'}.".pem";
       $opts->{'certfile'} = $cadir."/certs/".$opts->{'keyname'}.".pem";
-      
+
       # set some defaults
       $opts->{'nopass'}        = 0;
       $opts->{'include'}       = 0;
@@ -173,7 +173,7 @@ sub get_export_key {
       return;
    }
 
-   if(($opts->{'nopass'} || $opts->{'format'} eq 'DER') && 
+   if(($opts->{'nopass'} || $opts->{'format'} eq 'DER') &&
       ((not defined($opts->{'passwd'})) || ($opts->{'passwd'} eq ''))) {
       $main->show_key_nopasswd_dialog($opts);
       return;
@@ -195,7 +195,7 @@ sub get_export_key {
             GUI::HELPERS::print_warning($t, $ext);
             return;
          } elsif((not defined($out)) || (length($out) < 3)) {
-            GUI::HELPERS::print_warning( 
+            GUI::HELPERS::print_warning(
                _("Converting failed, Export not possible"), $ext);
             return;
          }
@@ -203,7 +203,7 @@ sub get_export_key {
 
       if(($opts->{'format'} eq 'PEM') && not $opts->{'nopass'}) {
          open(IN, "<$opts->{'keyfile'}") || do {
-            $t = sprintf(_("Can't open Key file: %s: %s"), 
+            $t = sprintf(_("Can't open Key file: %s: %s"),
                   $opts->{'keyfile'}, $!);
             GUI::HELPERS::print_warning($t);
             return;
@@ -213,7 +213,7 @@ sub get_export_key {
       }
       if($opts->{'include'}) {
          open(IN, "<$opts->{'certfile'}") || do {
-            $t = sprintf(_("Can't open Certificate file: %s: %s"), 
+            $t = sprintf(_("Can't open Certificate file: %s: %s"),
                   $opts->{'certfile'}, $!);
             GUI::HELPERS::print_warning($t);
             return;
@@ -224,7 +224,7 @@ sub get_export_key {
       }
 
       open(OUT, ">$opts->{'outfile'}") || do {
-            $t = sprintf(_("Can't open output file: %s: %s"), 
+            $t = sprintf(_("Can't open output file: %s: %s"),
                   $opts->{'outfile'}, $!);
          GUI::HELPERS::print_warning($t);
          return;
@@ -236,15 +236,15 @@ sub get_export_key {
       $main->{'exportdir'} = HELPERS::write_export_dir($main,
             $opts->{'outfile'});
 
-      $t = sprintf(_("Key succesfully exported to %s"), 
+      $t = sprintf(_("Key succesfully exported to %s"),
             $opts->{'outfile'});
       GUI::HELPERS::print_info($t);
       return;
 
    } elsif ($opts->{'format'} eq 'P12') {
-      $opts->{'certfile'} = 
+      $opts->{'certfile'} =
          $main->{'cadir'}."/certs/".$opts->{'keyname'}.".pem";
-      $opts->{'cafile'}   = 
+      $opts->{'cafile'}   =
          $main->{'cadir'}."/cacert.pem";
 
       if (-f $main->{'cadir'}."/cachain.pem") {
@@ -289,20 +289,20 @@ sub get_export_key {
          return;
       }
 
-      $main->{'exportdir'} = HELPERS::write_export_dir($main, 
+      $main->{'exportdir'} = HELPERS::write_export_dir($main,
             $opts->{'outfile'});
 
-      $t = sprintf(_("Certificate and Key successfully exported to %s"), 
+      $t = sprintf(_("Certificate and Key successfully exported to %s"),
             $opts->{'outfile'});
       GUI::HELPERS::print_info($t, $ext);
       return;
 
    } elsif (($opts->{'format'} eq "ZIP") || ($opts->{'format'} eq "TAR")) {
-      $opts->{'certfile'} = 
+      $opts->{'certfile'} =
          $main->{'cadir'}."/certs/".$opts->{'keyname'}.".pem";
       if(not -s $opts->{'certfile'}) {
          $t = sprintf(
-               _("Certificate is necessary for export as %s file"), 
+               _("Certificate is necessary for export as %s file"),
                $opts->{'format'});
          $t .= "\n";
          $t .= _("Export is not possible!");
@@ -310,7 +310,7 @@ sub get_export_key {
          return;
       }
 
-      $opts->{'parsed'} = 
+      $opts->{'parsed'} =
          $main->{'CERT'}->parse_cert($main, $opts->{'keyname'});
 
       my $tmpcert   = "$main->{'tmpdir'}/cert.pem";
@@ -360,25 +360,25 @@ sub get_export_key {
       }
 
       unlink($opts->{'outfile'});
-      if($opts->{'format'} eq 'ZIP') { 
+      if($opts->{'format'} eq 'ZIP') {
          system($main->{'init'}->{'zipbin'}, '-j', $opts->{'outfile'},
-               $tmpcacert, $tmpkey, $tmpcert); 
+               $tmpcacert, $tmpkey, $tmpcert);
          my $ret = $? >> 8;
       } elsif ($opts->{'format'} eq 'TAR') {
          system($main->{'init'}->{'tarbin'}, 'cfv', $opts->{'outfile'},
-               $tmpcacert, $tmpkey, $tmpcert); 
+               $tmpcacert, $tmpkey, $tmpcert);
          my $ret = $? >> 8;
       }
 
       if(not -s $opts->{'outfile'} || $ret) {
          GUI::HELPERS::print_warning(
-               sprintf(_("Generating %s file failed"), 
+               sprintf(_("Generating %s file failed"),
                   $opts->{'format'}));
       } else {
-         $main->{'exportdir'} = HELPERS::write_export_dir($main, 
+         $main->{'exportdir'} = HELPERS::write_export_dir($main,
                $opts->{'outfile'});
-         $t = sprintf( 
-               _("Certificate and Key successfully exported to %s"), 
+         $t = sprintf(
+               _("Certificate and Key successfully exported to %s"),
                $opts->{'outfile'});
          GUI::HELPERS::print_info($t);
       }
@@ -389,7 +389,7 @@ sub get_export_key {
       return;
 
    } else {
-      $t = sprintf(_("Invalid format for export requested: %s"), 
+      $t = sprintf(_("Invalid format for export requested: %s"),
             $opts->{'format'});
       GUI::HELPERS::print_warning($t);
       return;
@@ -407,7 +407,7 @@ sub _check_key {
    my ($t, $type);
 
    open(KEY, "<$file") || do {
-      $t = sprintf(_("Can't open Key file: %s: %s"), 
+      $t = sprintf(_("Can't open Key file: %s: %s"),
             $file, $!);
       GUI::HELPERS::print_warning($t);
       return;

@@ -7,7 +7,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -26,9 +26,9 @@ my $version = "0.1";
 my $true = 1;
 my $false = undef;
 
-# 
+#
 # generate filename from Subject-DN
-# 
+#
 sub gen_name {
    my $opts = shift;
 
@@ -58,14 +58,14 @@ sub gen_name {
 #
 # generate temporary filename
 #
-sub mktmp { 
+sub mktmp {
    my $base = shift;
 
    my @rand = ();
    my $ret  = '';
 
-   do { 
-      for(my $i = 0; $i < 8; $i++) { 
+   do {
+      for(my $i = 0; $i < 8; $i++) {
          push(@rand, int(rand 26)+65);
       }
       my $end = pack("C8", @rand);
@@ -83,13 +83,13 @@ sub exit_clean {
    my ($ret) = @_;
 
    $ret = 0 unless(defined $ret);
-   
+
    # hack to avoid busy cursor
    my $rootwin = Gtk2::Gdk->get_default_root_window();
    my $cursor  = Gtk2::Gdk::Cursor->new('left-ptr');
 
    $rootwin->set_cursor($cursor);
-   
+
    Gtk2->main_quit();
    exit($ret);
 }
@@ -123,7 +123,7 @@ sub parse_dn {
          }
       }
    }
-      
+
    return($tmp);
 }
 
@@ -204,7 +204,7 @@ sub write_export_dir {
    $dir =~ s:/[^/]+$::;
 
    open(EXPOUT, ">$main->{'cadir'}/.exportdir") || do {
-      my $t = sprintf(_("Can't write exportdir: %s, %s"), 
+      my $t = sprintf(_("Can't write exportdir: %s, %s"),
                "$main->{'cadir'}/.exportdir", $!);
       GUI::HELPERS::print_warning($t);
       return;
@@ -248,7 +248,7 @@ my %output = ();        # uniq on the fly
         }
       }
       $output{$type.$elem} = 1;
-    }  
+    }
   }
   return(wantarray ? keys(%output) : join(', ', keys(%output)));
 }
@@ -263,7 +263,7 @@ sub enc_base64 {
 sub dec_base64 {
 	my $data = shift;
 	$data =~ tr/-_/\/+/;
-	return MIME::Base64::decode($data);	
+	return MIME::Base64::decode($data);
 }
 
 
@@ -284,7 +284,7 @@ HELPERS - helper functions for TinyCA, doing small jobs not related to the GUI
    $dnhash  = HELPERS::parse_dn($dnstring);
    $exthash = HELPERS::parse_extensions($mode, $lines);
    $subjaltname = HELPERS::gen_subjectaltname_contents($type, @list);
-   
+
    exit_clean($retcode);
 
 =head1 DESCRIPTION

@@ -19,9 +19,9 @@ version 0.7.3 - Tue May 23 2006
 
 version 0.7.3 - Tue May 23 2006
    * Enhanced version detection
-     thanks to Peter Marschall 
+     thanks to Peter Marschall
      Debian #360766 #360555
-   * Changed command for openssl due to changed openssl behavior 
+   * Changed command for openssl due to changed openssl behavior
      regarding fingerprints
      thanks to Peter Marschall
      Debian #360768
@@ -30,7 +30,7 @@ version 0.7.3 - Tue May 23 2006
    * Corrected exit call
      thanks to Peter Marschall
      Debian #360767
-     
+
 
 version 0.7.2 - Sat Feb 18 2006
    * Fixed bug, which made keysize always 4096
@@ -38,7 +38,7 @@ version 0.7.2 - Sat Feb 18 2006
    * Added tar file support for export
 
 version 0.7.1 - Sat Oct 22 2005
-   * Fixed possible crashbug, thanks to 
+   * Fixed possible crashbug, thanks to
    * Choose CA validity as maximal certificate lifetime
    * correctly include/don't include keys in exported certificate files
      thanks to "thus0 at free dot fr"
@@ -59,7 +59,7 @@ version 0.7.0 - Sun Apr 10 2005
 version 0.6.8 (beta) - Sun Feb 20 2004
    * added detection for openssl 0.9.8
    * removed crlDistributionPoint for Root-CA
-   * added patch for multiple OUs 
+   * added patch for multiple OUs
      Thanks to Uwe Arndt <arndt@uni-koblenz.de>
    * added patch for multiple subjectAltName extensions (Debian #271183)
      Thanks to Peter Marschall <peter@adpm.de>
@@ -90,7 +90,7 @@ version 0.6.4 (beta) - Thu Jul 15 2004
    * revocation reason can be given with openssl 0.9.7
    * changed default exportdir to users home
    * remeber exportdir from last export
-   * added possibility to set the extension extendedKeyUsage 
+   * added possibility to set the extension extendedKeyUsage
    * added possibility to leave email out of the subject dn (0.9.7)
 
 version 0.6.3 (beta) - Wed Jun 16 2004
@@ -124,7 +124,7 @@ version 0.5.3 (beta) - Mon Sep 29 2003
 
 version 0.5.2 (beta) - Mon Sep  1 2003
    * added renewal of certificates
-   
+
 version 0.5.1 (beta) - Tue Aug 26 2003
    * code cleanup
    * fixed some minor bugs and typos
@@ -149,7 +149,7 @@ version 0.4.6 (beta) - Mon Jun 23 2003
      thanks to ludwig.nussel@suse.de again
 
 version 0.4.5 (beta) - Thu Jun 19 2003
-   * some usability improvements 
+   * some usability improvements
      thanks to ludwig.nussel@suse.de
    * some more configuration options
 
@@ -163,7 +163,7 @@ version 0.4.3 (beta) - Fri Sep 27 2002
      thanks to iebgener@yahoo.com and waldemar.mertke@gmx.de
 
 version 0.4.2 (beta) - Sat Aug 24 2002
-   * fixed revocation when serial is > 15 
+   * fixed revocation when serial is > 15
      thanks to curly@e-card.bg
    * fixed recognition of java-generated requests
      thanks to matthew.lewis@syntegra.com
@@ -176,8 +176,8 @@ version 0.4.1 (beta) - Wed Aug 21 2002
 
 version 0.4.0 (beta) - Sun Aug 18 2002
    * works independent of OpenCA modules now
-   * some enhancements to functionality (e.g. export of key without 
-     passwd)   
+   * some enhancements to functionality (e.g. export of key without
+     passwd)
    * some smaller bugfixes in usability
    * new specfile (thanks to oron@actcom.co.il)
 

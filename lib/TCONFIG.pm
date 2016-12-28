@@ -1,17 +1,17 @@
 # Copyright (c) Stephan Martin <sm@sm-zone.net>
 #
 # $Id: TCONFIG.pm,v 1.2 2006/06/28 21:50:42 sm Exp $
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
@@ -187,7 +187,7 @@ sub init_config {
       }else {
          $self->{$sect}->{'nsRenewalUrl'} = 'none';
       }
-      
+
       # store extendedKeyUsage information
       if(defined($self->{$sect}->{'extendedKeyUsage'})) {
          if($self->{$sect}->{'extendedKeyUsage'} =~ /critical/) {
@@ -196,7 +196,7 @@ sub init_config {
          }else {
             $self->{$sect}->{'extendedKeyUsageType'} = 'noncritical';
          }
-         if($self->{$sect}->{'extendedKeyUsage'} 
+         if($self->{$sect}->{'extendedKeyUsage'}
                =~ /ENV:/) {
             $self->{$sect}->{'extendedKeyUsage'} = 'user';
          }
@@ -204,7 +204,7 @@ sub init_config {
          $self->{$sect}->{'extendedKeyUsage'} = 'none';
          $self->{$sect}->{'extendedKeyUsageType'} = 'noncritical';
       }
-      
+
       # store keyUsage information
       if(defined($self->{$sect}->{'keyUsage'})) {
          if($self->{$sect}->{'keyUsage'} =~ /critical/) {
@@ -212,7 +212,7 @@ sub init_config {
          }else {
             $self->{$sect}->{'keyUsageType'} = 'noncritical';
          }
-         if($self->{$sect}->{'keyUsage'} 
+         if($self->{$sect}->{'keyUsage'}
                =~ /digitalSignature, keyEncipherment/) {
             $self->{$sect}->{'keyUsage'} = 'keysig';
          } elsif($self->{$sect}->{'keyUsage'}
@@ -268,7 +268,7 @@ sub init_config {
 
       $self->write_config($main, $ca);
    }
-   
+
    return;
 }
 
@@ -277,7 +277,7 @@ sub config_ca {
 
    my($action);
 
-   if(not defined($ca)) { 
+   if(not defined($ca)) {
       $ca = $main->{'CA'}->{'actca'};
    }
    if(not defined($ca)) {
@@ -292,7 +292,7 @@ sub config_ca {
 sub config_openssl {
    my ($self, $main, $ca) = @_;
 
-   if(not defined($ca)) { 
+   if(not defined($ca)) {
       $ca = $main->{'CA'}->{'actca'};
    }
    if(not defined($ca)) {
@@ -311,13 +311,13 @@ sub write_config {
 
    # these sections are not configurable
    @sections = qw(
-         ca 
-         policy_client 
-         policy_server 
+         ca
+         policy_client
+         policy_server
          policy_ca
-         req 
-         req_distinguished_name 
-         v3_req 
+         req
+         req_distinguished_name
+         v3_req
          req_attributes
          );
 
@@ -338,19 +338,19 @@ sub write_config {
 
    # these sections are configurable
    @sections = qw(
-         v3_ca 
+         v3_ca
          crl_ext
-         server_ca 
-         client_ca 
-         ca_ca 
-         client_cert 
+         server_ca
+         client_ca
+         ca_ca
+         client_cert
          server_cert
          );
 
    foreach $sect (@sections) {
       print OUT "[ $sect ]\n";
       if($sect eq "v3_ca") {
-         @opts = qw( 
+         @opts = qw(
                subjectKeyIdentifier
                authorityKeyIdentifier
                basicConstraints
@@ -365,7 +365,7 @@ sub write_config {
                );
 
          foreach $key (@opts) {
-          if(defined($self->{$sect}->{$key}) && 
+          if(defined($self->{$sect}->{$key}) &&
              $self->{$sect}->{$key}  ne '' &&
              $self->{$sect}->{$key}  ne 'none') {
              print OUT "$key = $self->{$sect}->{$key}\n";
@@ -403,7 +403,7 @@ sub write_config {
          }
       } elsif($sect eq "server_cert" ||
               $sect eq "client_cert") {
-         @opts = qw( 
+         @opts = qw(
                basicConstraints
                nsCertType
                nsComment
@@ -417,7 +417,7 @@ sub write_config {
                );
 
          foreach $key (@opts) {
-          if(defined($self->{$sect}->{$key}) && 
+          if(defined($self->{$sect}->{$key}) &&
              $self->{$sect}->{$key}  ne '' &&
              $self->{$sect}->{$key}  ne 'none') {
              print OUT "$key = $self->{$sect}->{$key}\n";
@@ -428,21 +428,21 @@ sub write_config {
                print OUT "nsSslServerName = \$ENV::NSSSLSERVERNAME\n";
             } elsif($self->{$sect}->{'nsSslServerName'} eq 'none') {
                ;# do nothing
-            } 
+            }
          }
          if(defined($self->{$sect}->{'nsRevocationUrl'})) {
             if($self->{$sect}->{'nsRevocationUrl'} eq 'user') {
                print OUT "nsRevocationUrl = \$ENV::NSREVOCATIONURL\n";
             } elsif($self->{$sect}->{'nsRevocationUrl'} eq 'none') {
                ;# do nothing
-            } 
+            }
          }
          if(defined($self->{$sect}->{'nsRenewalUrl'})) {
             if($self->{$sect}->{'nsRenewalUrl'} eq 'user') {
                print OUT "nsRenewalUrl = \$ENV::NSRENEWALURL\n";
             } elsif($self->{$sect}->{'nsRenewalUrl'} eq 'none') {
                ;# do nothing
-            } 
+            }
          }
          if(defined($self->{$sect}->{'subjectAltName'})) {
             if($self->{$sect}->{'subjectAltName'} eq 'user') {
@@ -493,8 +493,8 @@ sub write_config {
                  } else {
                      print OUT "extendedKeyUsage = \$ENV::EXTENDEDKEYUSAGE\n";
                  }
-               } else { 
-                  if($self->{$sect}->{'extendedKeyUsageType'} eq 'critical') { 
+               } else {
+                  if($self->{$sect}->{'extendedKeyUsageType'} eq 'critical') {
                      print OUT "extendedKeyUsage = critical, $self->{$sect}->{'extendedKeyUsage'}\n";
                   } else {
                      print OUT "extendedKeyUsage = $self->{$sect}->{'extendedKeyUsage'}\n";
@@ -507,7 +507,7 @@ sub write_config {
       } elsif(($sect eq "server_ca") ||
               ($sect eq "client_ca") ||
               ($sect eq "ca_ca")) {
-         @opts = qw( 
+         @opts = qw(
                dir
                certs
                crl_dir
@@ -528,7 +528,7 @@ sub write_config {
                );
 
          foreach $key (@opts) {
-          if(defined($self->{$sect}->{$key}) && 
+          if(defined($self->{$sect}->{$key}) &&
              $self->{$sect}->{$key}  ne '' &&
              $self->{$sect}->{$key}  ne 'none') {
              print OUT "$key = $self->{$sect}->{$key}\n";
@@ -551,5 +551,5 @@ sub write_config {
 
    return;
 }
-   
+
 1

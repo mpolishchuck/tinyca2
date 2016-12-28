@@ -1,17 +1,17 @@
 # Copyright (c) Stephan Martin <sm@sm-zone.net>
 #
 # $Id: REQ.pm,v 1.7 2006/06/28 21:50:42 sm Exp $
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
@@ -64,12 +64,12 @@ sub get_req_create {
       if(defined($opts) && $opts eq "sign") {
          $opts->{'sign'} = 1;
       }
-   
+
       $parsed = $main->{'CERT'}->parse_cert($main, 'CA');
-      
-      defined($parsed) || 
+
+      defined($parsed) ||
          GUI::HELPERS::print_error(_("Can't read CA certificate"));
-   
+
       # set defaults
       if(defined $parsed->{'C'}) {
          $opts->{'C'} = $parsed->{'C'};
@@ -96,7 +96,7 @@ sub get_req_create {
       ($opts->{'CN'} eq "") ||
       (not defined($opts->{'passwd'})) ||
       ($opts->{'passwd'} eq "")) {
-      $main->show_req_dialog($opts); 
+      $main->show_req_dialog($opts);
       GUI::HELPERS::print_warning(
             _("Please specify at least Common Name ")
             ._("and Password"));
@@ -104,8 +104,8 @@ sub get_req_create {
    }
 
    if((not defined($opts->{'passwd2'})) ||
-       $opts->{'passwd'} ne $opts->{'passwd2'}) { 
-      $main->show_req_dialog($opts); 
+       $opts->{'passwd'} ne $opts->{'passwd2'}) {
+      $main->show_req_dialog($opts);
       GUI::HELPERS::print_warning(_("Passwords don't match"));
       return;
    }
@@ -115,7 +115,7 @@ sub get_req_create {
    if((defined $opts->{'C'}) &&
       ($opts->{'C'} ne "") &&
       (length($opts->{'C'}) != 2)) {
-      $main->show_req_dialog($opts); 
+      $main->show_req_dialog($opts);
       GUI::HELPERS::print_warning(
             _("Country must be exact 2 letter code"));
       return;
@@ -147,13 +147,13 @@ sub create_req {
    my($reqfile, $keyfile, $ca, $ret, $ext, $cadir);
 
    GUI::HELPERS::set_cursor($main, 1);
-   
+
    $ca    = $main->{'CA'}->{'actca'};
    $cadir = $main->{'CA'}->{$ca}->{'dir'};
 
    $reqfile = $cadir."/req/".$opts->{'reqname'}.".pem";
    $keyfile = $cadir."/keys/".$opts->{'reqname'}.".pem";
-         
+
    ($ret, $ext) = $self->{'OpenSSL'}->newkey(
          'algo'    => $opts->{'algo'},
          'bits'    => $opts->{'bits'},
@@ -161,7 +161,7 @@ sub create_req {
          'pass'    => $opts->{'passwd'}
          );
 
-   if (not -s $keyfile || $ret) { 
+   if (not -s $keyfile || $ret) {
       unlink($keyfile);
       GUI::HELPERS::set_cursor($main, 0);
       GUI::HELPERS::print_warning(_("Generating key failed"), $ext);
@@ -186,7 +186,7 @@ sub create_req {
          'dn'       => \@dn,
          );
 
-   if (not -s $reqfile || $ret) { 
+   if (not -s $reqfile || $ret) {
       unlink($keyfile);
       unlink($reqfile);
       GUI::HELPERS::set_cursor($main, 0);
@@ -199,7 +199,7 @@ sub create_req {
    $main->{'reqbrowser'}->update($cadir."/req",
                                  $cadir."/crl/crl.pem",
                                  $cadir."/index.txt",
-                                 0); 
+                                 0);
 
    $main->{'keybrowser'}->update($cadir."/keys",
                                  $cadir."/crl/crl.pem",
@@ -229,7 +229,7 @@ sub get_del_req {
    $cadir = $main->{'reqbrowser'}->selection_cadir();
 
    if(not(defined($reqfile))) {
-      $req = $main->{'reqbrowser'}->selection_dn(); 
+      $req = $main->{'reqbrowser'}->selection_dn();
 
 
       if(not defined($req)) {
@@ -270,7 +270,7 @@ sub del_req {
    $main->{'reqbrowser'}->update($cadir."/req",
                                  $cadir."/crl/crl.pem",
                                  $cadir."/index.txt",
-                                 0); 
+                                 0);
 
    GUI::HELPERS::set_cursor($main, 0);
 
@@ -289,7 +289,7 @@ sub read_reqlist {
    $modt = (stat($reqdir))[9];
 
    if(defined($self->{'lastread'}) &&
-      $self->{'lastread'} >= $modt) {  
+      $self->{'lastread'} >= $modt) {
       GUI::HELPERS::set_cursor($main, 0);
       return(0);
    }
@@ -300,7 +300,7 @@ sub read_reqlist {
       return(0);
    };
 
-   while($f = readdir(DIR)) { 
+   while($f = readdir(DIR)) {
       next if $f =~ /^\./;
       $c++;
    }
@@ -355,13 +355,13 @@ sub get_sign_req {
    my($time, $parsed, $ca, $cadir, $ext, $ret);
 
    $box->destroy() if(defined($box));
-   
+
    $time  = time();
    $ca    = $main->{'reqbrowser'}->selection_caname();
    $cadir = $main->{'reqbrowser'}->selection_cadir();
 
    if(not(defined($opts->{'reqfile'}))) {
-      $opts->{'req'} = $main->{'reqbrowser'}->selection_dn(); 
+      $opts->{'req'} = $main->{'reqbrowser'}->selection_dn();
 
       if(not defined($opts->{'req'})) {
          GUI::HELPERS::print_info(_("Please select a Request first"));
@@ -376,7 +376,7 @@ sub get_sign_req {
          GUI::HELPERS::print_warning(_("Request file not found"));
          return;
    }
-   
+
    if((-s $cadir."/certs/".$opts->{'reqname'}.".pem") &&
       (!(defined($opts->{'overwrite'})) || ($opts->{'overwrite'} ne 'true'))) {
       $main->show_cert_overwrite_confirm($opts);
@@ -385,7 +385,7 @@ sub get_sign_req {
 
    $parsed = $main->{'CERT'}->parse_cert($main, 'CA');
 
-   defined($parsed) || 
+   defined($parsed) ||
       GUI::HELPERS::print_error(_("Can't read CA certificate"));
 
    if(!defined($opts->{'passwd'})) {
@@ -396,12 +396,12 @@ sub get_sign_req {
          $opts->{'days'} = int(($parsed->{'EXPDATE'}/86400) - ($time/86400));
       }
 
-      $main->show_req_sign_dialog($opts); 
-      return; 
+      $main->show_req_sign_dialog($opts);
+      return;
    }
 
    if((($time + ($opts->{'days'} * 86400)) > $parsed->{'EXPDATE'}) &&
-      (!(defined($opts->{'ignoredate'})) || 
+      (!(defined($opts->{'ignoredate'})) ||
        $opts->{'ignoredate'} ne 'true')){
       $main->show_req_date_warning($opts);
       return;
@@ -438,7 +438,7 @@ sub get_sign_req {
          $opts->{'digest'} = "ripemd160";
       } else {
       }
-   } else { 
+   } else {
       $opts->{'digest'} = 0;
    }
 
@@ -483,14 +483,14 @@ sub sign_req {
       $opts->{'subjectAltName'}     = 'none';
       $opts->{'subjectAltNameType'} = 'none';
    } else {
-       $opts->{'subjectAltNameType'} = 
+       $opts->{'subjectAltNameType'} =
           $main->{TCONFIG}->{$opts->{'type'}.'_cert'}->{'subjectAltNameType'};
    }
    if(not defined($opts->{'extendedKeyUsage'})) {
       $opts->{'extendedKeyUsage'}     = 'none';
       $opts->{'extendedKeyUsageType'} = 'none';
    } else {
-      $opts->{'extendedKeyUsageType'} = 
+      $opts->{'extendedKeyUsageType'} =
          $main->{TCONFIG}->{$opts->{'type'}.'_cert'}->{'extendedKeyUsageType'};
    }
 
@@ -610,17 +610,17 @@ sub sign_req {
       seek(IN, 0, 0);
       print OUT while(<IN>);
    }
-   
+
    close IN; close OUT;
 
    GUI::HELPERS::print_info(
          _("Request signed succesfully.\nCertificate created"), $ext);
-   
+
    GUI::HELPERS::set_cursor($main, 1);
 
-   $main->{'CERT'}->reread_cert($main, 
+   $main->{'CERT'}->reread_cert($main,
          HELPERS::dec_base64($opts->{'reqname'}));
-   
+
    $main->{'certbrowser'}->update($cadir."/certs",
                                   $cadir."/crl/crl.pem",
                                   $cadir."/index.txt",
@@ -630,7 +630,7 @@ sub sign_req {
    $opts = undef;
 
    GUI::HELPERS::set_cursor($main, 0);
-     
+
    return($ret, $ext);
 }
 
@@ -694,9 +694,9 @@ sub get_import_req {
          return;
       }
 
-      $opts->{'tmpfile'} = 
+      $opts->{'tmpfile'} =
          HELPERS::mktmp($self->{'OpenSSL'}->{'tmp'}."/import");
-   
+
       open(TMP, ">$opts->{'tmpfile'}") || do {
          GUI::HELPERS::print_warning( _("Can't create temporary file: %s: %s"),
                $opts->{'tmpfile'}, $!);
@@ -710,13 +710,13 @@ sub get_import_req {
    $parsed = $self->{'OpenSSL'}->parsereq(
 			$main->{'CA'}->{$ca}->{'cnf'},
 			$file);
-   
+
    if(not defined($parsed)) {
       unlink($opts->{'tmpfile'});
       GUI::HELPERS::print_warning(_("Parsing Request failed"));
       return;
    }
-   
+
    $main->show_import_verification("req", $opts, $parsed);
    return;
 }
@@ -732,12 +732,12 @@ sub import_req {
    $box->destroy() if(defined($box));
 
    GUI::HELPERS::set_cursor($main, 1);
-   
+
    $ca    = $main->{'reqbrowser'}->selection_caname();
    $cadir = $main->{'reqbrowser'}->selection_cadir();
 
    $opts->{'name'} = HELPERS::gen_name($parsed);
-   
+
    $opts->{'reqname'} = HELPERS::enc_base64($opts->{'name'});
 
    $opts->{'reqfile'} = $cadir."/req/".$opts->{'reqname'}.".pem";
@@ -764,7 +764,7 @@ sub import_req {
 
 sub parse_req {
    my ($self, $main, $name, $force) = @_;
-   
+
    my ($parsed, $ca, $reqfile, $req);
 
    GUI::HELPERS::set_cursor($main, 1);
@@ -782,4 +782,3 @@ sub parse_req {
 }
 
 1
-

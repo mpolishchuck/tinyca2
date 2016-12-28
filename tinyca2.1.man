@@ -27,7 +27,7 @@ This manual page was written for the Debian distribution
 because the original program does not have a manual page.
 .PP
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
-.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
 .\" respectively.
 \fBtinyca\fP is a very simple Certification Authority.  It features a graphical
 interface to create Certificate Requests, sign them with the key of the

@@ -1,17 +1,17 @@
 # Copyright (c) Stephan Martin <sm@sm-zone.net>
 #
 # $Id: HELPERS.pm,v 1.6 2006/06/28 21:50:42 sm Exp $
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
@@ -26,7 +26,7 @@ use POSIX;
 #
 sub print_error {
    my ($t, $ext) = @_;
-   
+
    my ($box, $button, $dbutton, $expander, $text, $scrolled, $buffer);
 
    $button = Gtk2::Button->new_from_stock('gtk-ok');
@@ -169,7 +169,7 @@ sub dialog_box {
 }
 
 #
-# create standard label 
+# create standard label
 #
 sub create_label {
    my ($text, $mode, $wrap, $bold) = @_;
@@ -178,19 +178,19 @@ sub create_label {
 
    my $label = Gtk2::Label->new($text);
 
-   $label->set_justify($mode); 
-   if($mode eq 'center') { 
-      $label->set_alignment(0.5, 0.5); 
-   }elsif($mode eq 'left') { 
-      $label->set_alignment(0, 0); 
-   }elsif($mode eq 'right') { 
-      $label->set_alignment(1, 1); 
-   } 
-   
-   $label->set_line_wrap($wrap); 
-   
+   $label->set_justify($mode);
+   if($mode eq 'center') {
+      $label->set_alignment(0.5, 0.5);
+   }elsif($mode eq 'left') {
+      $label->set_alignment(0, 0);
+   }elsif($mode eq 'right') {
+      $label->set_alignment(1, 1);
+   }
+
+   $label->set_line_wrap($wrap);
+
    $label->set_markup($text) if($bold);
-   
+
    return($label);
 }
 
@@ -294,9 +294,9 @@ sub browse_file {
 
    my($file_chooser, $filename, $filter);
 
-   $file_chooser = Gtk2::FileChooserDialog->new ($title, undef, $mode, 
-         'gtk-cancel' => 'cancel', 
-         'gtk-ok' => 'ok'); 
+   $file_chooser = Gtk2::FileChooserDialog->new ($title, undef, $mode,
+         'gtk-cancel' => 'cancel',
+         'gtk-ok' => 'ok');
 
    $file_chooser->add_shortcut_folder ('/tmp');
 
@@ -344,7 +344,7 @@ GUI
 
 =head1 SYNOPSIS
 
- use GUI::HELPERS; 
+ use GUI::HELPERS;
 
  GUI::HELPERS::print_info($text, $ext);
  GUI::HELPERS::print_warning($text, $ext);
@@ -401,7 +401,7 @@ is of type error and the program will shut down after closing the message.
 =over 1
 
 sorts the clist with the values from the given column $col.
-   
+
 =back
 
 =head2 GUI::HELPERS::dialog_box($title, $text, $button1, $button2);
@@ -430,7 +430,7 @@ returns the reference to a new Gtk2::Label. $mode can be "center", "left" or
 adds a new row to $table. The new row is appended at $row and has two columns:
 the first will contain a label with the content of string $k, the second the
 content of string $v. $mode, $wrap, $bold are the arguments for
-GUI::HELPERS::create_label(), mentioned above. 
+GUI::HELPERS::create_label(), mentioned above.
 The function returns the number of the next free row in the table.
 
 =back
