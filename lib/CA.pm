@@ -68,8 +68,7 @@ sub new {
 }
 
 #
-# see if the ca can be opened without asking the user
-# or show the open dialog
+# Show the CA selection dialog
 #
 sub get_open_name {
    my ($self, $main, $opts) = @_;
@@ -77,13 +76,7 @@ sub get_open_name {
    my ($ind);
 
    if((not defined($opts->{'name'})) || ($opts->{'name'} eq "")) {
-      # if only one CA is defined, open it without prompting
-      if($#{$self->{'calist'}} == 0) {
-         $opts->{'name'} = $self->{'calist'}->[0];
-         $self->open_ca($main, $opts);
-      } else {
-         $main->show_select_ca_dialog('open');
-      }
+     $main->show_select_ca_dialog('open');
    }
 }
 
