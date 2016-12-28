@@ -444,6 +444,7 @@ sub create_toolbar {
       }
    } else {
       $self->{'toolbar'} = Gtk2::Toolbar->new();
+      $self->{'tooltips'} = Gtk2::Tooltips->new();
       $self->{'toolbar'}->set_orientation('horizontal');
       $self->{'toolbar'}->set_icon_size('small-toolbar');
 
@@ -454,29 +455,33 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-quit');
       $self->{'toolbar'}->insert($button, -1);
       $button->signal_connect('clicked', sub { exit(4) });
-
+      $button->set_tooltip($self->{'tooltips'}, _("Exit TinyCA"), "");
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-open');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Open CA"));
+      $button->set_tooltip($self->{'tooltips'}, _("Open other CA"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CA'}->get_open_name($self)});
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-new');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("New CA"));
+      $button->set_tooltip($self->{'tooltips'}, _("Create new CA"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CA'}->get_ca_create($self)});
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-convert');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Import CA"));
+      $button->set_tooltip($self->{'tooltips'}, _("Import CA"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CA'}->get_ca_import($self)});
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-delete');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Delete CA"));
+      $button->set_tooltip($self->{'tooltips'}, _("Delete CA"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CA'}->get_ca_delete($self)});
    
@@ -487,30 +492,35 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-find');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Details"));
+      $button->set_tooltip($self->{'tooltips'}, _("Show certificate details"), "");
       $button->signal_connect('clicked', sub {
             $self->show_details('CA') });
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-find-and-replace');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("History"));
+      $button->set_tooltip($self->{'tooltips'}, _("Show history"), "");
       $button->signal_connect('clicked', sub {
             $self->show_history() });
    
       $button = Gtk2::ToolButton->new_from_stock('gtk-new');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Sub CA"));
+      $button->set_tooltip($self->{'tooltips'}, _("Create new sub CA"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CA'}->get_ca_create($self, undef, undef, "sub")});
    
       $button = Gtk2::ToolButton->new_from_stock('gtk-save');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Export CA"));
+      $button->set_tooltip($self->{'tooltips'}, _("Export CA certificate"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CA'}->export_ca_cert($self)});
    
       $button = Gtk2::ToolButton->new_from_stock('gtk-save');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Export CRL"));
+      $button->set_tooltip($self->{'tooltips'}, _("Export certificate revocation list"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CA'}->export_crl($self)});
       
@@ -518,6 +528,7 @@ sub create_toolbar {
          $button = Gtk2::ToolButton->new_from_stock('gtk-save');
          $self->{'toolbar'}->insert($button, -1);
          $button->set_label(_("Export Chain"));
+         $button->set_tooltip($self->{'tooltips'}, _("Export Chain"), "");
          $button->signal_connect('clicked', sub {
                $self->{'CA'}->export_ca_chain($self)});
       }
@@ -526,12 +537,14 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-find');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Details"));
+      $button->set_tooltip($self->{'tooltips'}, _("Show certificate details"), "");
       $button->signal_connect('clicked', sub {
             $self->show_details('cert') });
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-find');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("View"));
+      $button->set_tooltip($self->{'tooltips'}, _("View certificate raw data"), "");
       $button->signal_connect('clicked', sub {
             $self->show_text('cert') });
 
@@ -542,6 +555,7 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-new');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("New"));
+      $button->set_tooltip($self->{'tooltips'}, _("Create new certificate request"), "");
       $button->signal_connect('clicked' =>
             sub { $self->{'newcertmenu'}->popup( 
                undef, undef, undef, undef, 1, 0) });
@@ -549,12 +563,14 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-save');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Export"));
+      $button->set_tooltip($self->{'tooltips'}, _("Export certificate"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CERT'}->get_export_cert($self) });
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-stop');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Revoke"));
+      $button->set_tooltip($self->{'tooltips'}, _("Revoke certificate"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CERT'}->get_revoke_cert($self) });
 
@@ -565,6 +581,7 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-refresh');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Renew"));
+      $button->set_tooltip($self->{'tooltips'}, _("Renew certificate"), "");
       $button->signal_connect('clicked' =>
             sub { $self->{'renewcertmenu'}->popup(
                undef, undef, undef, undef, 1, 0) });
@@ -572,6 +589,7 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-delete');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Delete"));
+      $button->set_tooltip($self->{'tooltips'}, _("Delete certificate"), "");
       $button->signal_connect('clicked', sub {
             $self->{'CERT'}->get_del_cert($self) });
       
@@ -580,12 +598,14 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-save');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Export"));
+      $button->set_tooltip($self->{'tooltips'}, _("Export key"), "");
       $button->signal_connect('clicked', sub {
             $self->{'KEY'}->get_export_key($self) });
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-delete');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Delete"));
+      $button->set_tooltip($self->{'tooltips'}, _("Delete key"), "");
       $button->signal_connect('clicked', sub {
             $self->{'KEY'}->get_del_key($self) });
       
@@ -594,24 +614,28 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-find');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Details"));
+      $button->set_tooltip($self->{'tooltips'}, _("Show request details"), "");
       $button->signal_connect('clicked', sub {
             $self->show_details('req') });
 
       $button = Gtk2::ToolButton->new_from_stock('gtk-find');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("View"));
+      $button->set_tooltip($self->{'tooltips'}, _("View request raw data"), "");
       $button->signal_connect('clicked', sub {
             $self->show_text('req') });
       
       $button = Gtk2::ToolButton->new_from_stock('gtk-new');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("New"));
+      $button->set_tooltip($self->{'tooltips'}, _("New request"), "");
       $button->signal_connect('clicked', sub {
             $self->{'REQ'}->get_req_create($self) });
       
       $button = Gtk2::ToolButton->new_from_stock('gtk-revert-to-saved');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Import"));
+      $button->set_tooltip($self->{'tooltips'}, _("Import request"), "");
       $button->signal_connect('clicked', sub {
             $self->{'REQ'}->get_import_req($self) });
 
@@ -622,6 +646,7 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-properties');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Sign"));
+      $button->set_tooltip($self->{'tooltips'}, _("Sign request"), "");
       $button->signal_connect('clicked' =>
             sub { $self->{'reqsignmenu'}->popup(
                undef, undef, undef, undef, 1, 0) });
@@ -629,6 +654,7 @@ sub create_toolbar {
       $button = Gtk2::ToolButton->new_from_stock('gtk-delete');
       $self->{'toolbar'}->insert($button, -1);
       $button->set_label(_("Delete"));
+      $button->set_tooltip($self->{'tooltips'}, _("Delete request"), "");
       $button->signal_connect('clicked', sub {
             $self->{'REQ'}->get_del_req($self) });
    }
