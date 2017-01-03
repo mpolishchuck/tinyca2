@@ -29,6 +29,7 @@ use MIME::Base64;
 
 use POSIX;
 use Locale::gettext;
+use Getopt::Long;
 
 use OpenSSL;
 use CA;
@@ -84,8 +85,13 @@ if(not -d $init->{'templatedir'}) {
    exit(1);
 }
 
+my $basedir = $ENV{HOME}."/.TinyCA";
+
+# Parse command line options
+GetOptions('basedir=s' => \$basedir);
+
 # location for CA files
-$init->{'basedir'}   = $ENV{HOME}."/.TinyCA";
+$init->{'basedir'}   = $basedir;
 $init->{'exportdir'} = $ENV{HOME};
 
 umask(0077);
