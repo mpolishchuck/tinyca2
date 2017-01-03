@@ -29,6 +29,7 @@ use MIME::Base64;
 
 use POSIX;
 use Locale::gettext;
+use Getopt::Long;
 
 use OpenSSL;
 use CA;
@@ -54,10 +55,31 @@ $ENV{XLIB_SKIP_ARGB_VISUALS}= '1';
 
 my $init = {};
 
-# location of openssl
+# Default location of openssl
 $init->{'opensslbin'} = "/usr/bin/openssl";
+
+# Default location of zip
 $init->{'zipbin'} = "/usr/bin/zip";
+
+# Default location of tar
 $init->{'tarbin'} = "/bin/tar";
+
+# Default directory with the templates
+$init->{'templatedir'} = "./templates";
+
+# Default location for CA files
+$init->{'basedir'}   = $ENV{HOME}."/.TinyCA";
+$init->{'exportdir'} = $ENV{HOME};
+
+# Parse command line options
+GetOptions(
+    'opensslbin=s'  => \$init->{'opensslbin'},
+    'zipbin=s'      => \$init->{'zipbin'},
+    'tarbin=s'      => \$init->{'tarbin'},
+    'templatedir=s' => \$init->{'templatedir'},
+    'basedir=s'     => \$init->{'basedir'},
+    'exportdir=s'   => \$init->{'exportdir'},
+);
 
 if(not -x $init->{'opensslbin'}) {
    printf(gettext("Can't execute %s.\n"), $init->{'opensslbin'});
@@ -75,18 +97,11 @@ if(not -x $init->{'tarbin'}) {
    print gettext("Configure correct path to tar in tinyca.\n");
 }
 
-# directory with the templates
-$init->{'templatedir'} = "./templates";
-
 if(not -d $init->{'templatedir'}) {
    print gettext("Can't find templatedir.\n");
    print gettext("Please configure correct path with templates in tinyca.\n");
    exit(1);
 }
-
-# location for CA files
-$init->{'basedir'}   = $ENV{HOME}."/.TinyCA";
-$init->{'exportdir'} = $ENV{HOME};
 
 umask(0077);
 
