@@ -105,8 +105,14 @@ if(not -d $init->{'templatedir'}) {
 
 umask(0077);
 
+my $signals = {
+    'quit' => sub {
+        Gtk2->main_quit();
+    },
+};
+
 # create main object and initialize CA
-my $gui = GUI->new($init);
+my $gui = GUI->new($init, $signals);
 
 # and now run...
 $gui->{'mw'}->show_all();
