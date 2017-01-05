@@ -29,3 +29,25 @@ index f90f1b7..1d85ff8 100755
  
  # Default location for CA files
  $init->{'basedir'}   = $ENV{HOME}."/.TinyCA";
+diff --git a/tinyca2.1.man b/tinyca2.1.man
+index 6e7e55a..2f85c07 100644
+--- a/tinyca2.1.man
++++ b/tinyca2.1.man
+@@ -44,7 +44,7 @@ Specifies the base dir for your CA. Default is ~/.TinyCA.
+ Specifies the default dir for keys and certificates export. Default is ~/.
+ .TP
+ .BR \-\-templatedir =\fItemplates_path\fR
+-Specifies the directory where template openssl.cnf is located. Default is ./templates.
++Specifies the directory where template openssl.cnf is located. Default is /etc/tinyca2.
+ .TP
+ .BR \-\-opensslbin =\fIopenssl_binary\fR
+ Specifies where openssl binary is located. Default is /usr/bin/openssl.
+@@ -56,7 +56,7 @@ Specifies where zip binary is located. Default is /usr/bin/zip.
+ Specifies where tar binary is located. Default is /bin/tar.
+ .SH FILES
+ .PP
+-.IP "./templates/openssl.cnf"
++.IP "/etc/tinyca2/openssl.cnf"
+ Template openssl configuration for tinyca
+ .IP "~/.TinyCA/"
+ Storage place for the different CAs
