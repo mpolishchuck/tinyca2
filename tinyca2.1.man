@@ -2,7 +2,7 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH TINYCA 1 "July  9, 2003"
+.TH TINYCA 1 "January  5, 2017"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -36,11 +36,28 @@ keys in various formats.
 .PP
 Upon first invocation, information for a new Certificate Authority is generated.
 .SH OPTIONS
-Tinyca has no commandline options.
+.TP
+.BR \-\-basedir =\fICA_basedir\fR
+Specifies the base dir for your CA. Default is ~/.TinyCA.
+.TP
+.BR \-\-exportdir =\fIdir\fR
+Specifies the default dir for keys and certificates export. Default is ~/.
+.TP
+.BR \-\-templatedir =\fItemplates_path\fR
+Specifies the directory where template openssl.cnf is located. Default is ./templates.
+.TP
+.BR \-\-opensslbin =\fIopenssl_binary\fR
+Specifies where openssl binary is located. Default is /usr/bin/openssl.
+.TP
+.BR \-\-zipbin =\fIzip_binary\fR
+Specifies where zip binary is located. Default is /usr/bin/zip.
+.TP
+.BR \-\-tarbin =\fItar_binary\fR
+Specifies where tar binary is located. Default is /bin/tar.
 .SH FILES
 .PP
-.IP "/etc/tinyca/openssl.cnf"
-Openssl configuration for tinyca
+.IP "./templates/openssl.cnf"
+Template openssl configuration for tinyca
 .IP "~/.TinyCA/"
 Storage place for the different CAs
 .SH SEE ALSO
@@ -50,3 +67,4 @@ Storage place for the different CAs
 .PP
 This manual page was written by Ulrich Scholler <scholler@fnb.tu-darmstadt.de>,
 for the Debian GNU/Linux system (but may be used by others).
+Also this man page was modified according to recent changes.
