@@ -352,14 +352,15 @@ sub newcert {
 
    my ($ext, $cmd, $ret, $pid);
 
-   $cmd = "$self->{'bin'} req -x509";
+   $cmd = "$self->{'bin'} x509 -req";
    $cmd .= " -keyform PEM";
    $cmd .= " -outform PEM";
    $cmd .= " -passin env:SSLPASS";
 
-   $cmd .= " -config $opts->{'config'}";
+   $cmd .= " -extfile $opts->{'config'}";
+   $cmd .= " -extensions v3_ca";
    $cmd .= " -out \"$opts->{'outfile'}\"";
-   $cmd .= " -key \"$opts->{'keyfile'}\"";
+   $cmd .= " -signkey \"$opts->{'keyfile'}\"";
    $cmd .= " -in \"$opts->{'reqfile'}\"";
    $cmd .= " -days $opts->{'days'}";
    $cmd .= " -"."$opts->{'digest'}";
