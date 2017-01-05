@@ -1,14 +1,17 @@
-#tinyCA2 - version 0.7.5-3
+#tinyCA2 - version 0.7.5-4
 
 This is a "fork" from debian sources.
 * This repo contains shamelessly stolen debian patches (stolen-from-debian.patch). The debian patch has been modified to be used with arch linux.
 
 * The package contains also 'fix-tinyca-paths.patch' and the modified PKGBUILD from arch aur repository. I'm not sure the author for fix-tinyca-paths.patch', but, the credits for the PKGBUILD must go to Marti Raudsepp <marti@juffo.org>
 
-##My contribution to this package
-* New github repo from debian's source
-* Cleaned the debian patches by removing debian specific stuff
-* PLGBUILD is avilaible at https://github.com/glennie/arch-pkgbuilds, in the tinyca2 sub directory
+##Contributions to this package
+* New github repo from debian's source (thanks to @glennie).
+* Cleaned the debian patches by removing debian specific stuff (thanks to @glennie).
+* Added tooltips for buttons on toolbar (thanks to @thooge).
+* Added command line options which allow to customize the files location (thanks to @paulmaxwell).
+* Made it compatible with OpenSSL 1.0.2i or above (thanks to @paulmaxwell).
+* Fixed segfault on program quit (thanks to @paulmaxwell).
 
 ##Changelog
 version 0.7.5-2 - Tue May 31 2014
@@ -19,6 +22,13 @@ version 0.7.5-2 - Tue May 31 2014
 version 0.7.5-3 - Sat August 29 2015
   * added patches sub dir currently used patches
     * Added sha2 support by a patch stolen from Debian bug tracking system (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=759481#10). The patch is from Ross Vandegrift <ross@kallisti.us>
+
+version 0.7.5-4 - Thu January 5 2017
+  * Applied all debian patches expect path-changing. I think no need to keep them separate, it will ease the maintenance of this package.
+  * Added tooltips for buttons on toolbar (thanks to @thooge).
+  * Added command line options which allow to customize the files location.
+  * Made it compatible with OpenSSL 1.0.2i or above.
+  * Fixed segfault on program quit.
 
 ##Final words
 * Give credit where credit is due : my own contribution here is very limited. Please go through the source and give credits to contributors.
